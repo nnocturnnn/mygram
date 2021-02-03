@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Instagram
+{% endblock %}
+
+{% block main %}
+<div class="container main-container">
+    <section class="posts-container">
+        {% for post in posts %}
+        <div class="post-item">
+            <div class="post-item-header">
+                <div class="post-item-header-account">
+                    <div class="post-item-header-account-overlay">
+                        <a href="{% url 'users:details' post.author.pk %}" class="post-item-header-account-link-overlay">
+                            <div class="post-item-header-account-avatar-wrapper">
+                                <div class="post-item-header-account-avatar" {% if post.author.avatar %}style="background-image: url({{ post.author.avatar.url }})"{% endif %}></div>
+                            </div>
+                            <div class="post-item-header-account-username">{{ post.author.username }}</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="post-item-header-menu-trigger-wrapper">
+                    <div class="post-item-header-menu-wrapper" id="post-item-header-menu-wrapper_{{ post.pk }}">
+                        <span class="post-item-header-menu-trigger" id="post-item-header-menu-trigger_{{ post.pk }}"></span>
+                        <nav class="post-item-header-menu">
+                            <a href="{% url 'publications:post_detail' post.pk %}" class="post-item-header-menu-link-overlay">
+                                <span class="post-item-header-menu-item">Открыть</span>
+                            </a>
+                            <a href="{% url 'users:details' post.author.pk %}" class="post-item-header-menu-link-overlay">
+                                <span class="post-item-header-menu-item">Перейти к автору</span>
+                            </a>
+                            {% if user.pk == post.author.pk %}
+                            <a href="{% url 'publications:post_edit' post.pk %}" class="post-item-header-menu-link-overlay">
+                                <span class="post-item-header-menu-item">Редактировать</span>
+                            </a>
+                            <a href="{% url 'publications:post_delete' post.pk %}" class="post-item-header-menu-link-overlay">
+                                <span class="post-item-header-menu-item delete-text">Удалить</span>
+                            </a>
+                            {% endif %}
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="post-item-image-wrapper">
+                <a href="{% url 'publications:post_detail' post.pk %}">
+                    <img src="{{ post.image.url }}" alt="#" class="post-item-image">
+                </a>
+            </div>
+            {% if user.is_authenticated %}
+            <div class="post-item-button-wrapper">
+                <div class="post-item-button-wrapper-left">
+                    <a href="{% url 'publications:like' post.pk %}" id="like_button-{{ post.pk }}" class="post-item-button like-button {% if post.pk in liked_posts %}active    {% endif %}">
+                        <span class="post-item-button-icon like"></span>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            <div class="post-item-like-counter">
+                <span class="post-item-like-counter-text" id="like_counter-{{ post.pk }}">{% if post.likes.all %}{{ post.likes.all | length }}{% else %}Нет{% endif %} отметок "Нравится"</span>
+            </div>
+            {% if post.text %}
+            <div class="post-item-text-wrapper">
+                <p class="post-item-text"><a href="{% url 'users:details' post.author.pk %}"><span class="post-item-comment-username">{{ post.author.username }}</span></a> {{ post.text }}</p>
+            </div>
+            {% endif %}
+            <div class="post-item-comment-container">
+                {% for comment in post.comments.all %}
+                <div class="post-item-comment">
+                    <span class="post-item-comment-username"><a href="{% url 'users:details' comment.author.pk %}">{{ comment.author.username }}</a></span>
+                    <span class="post-item-comment-text">{{ comment.text }}</span>
+                    <div class="post-item-comment-control-block">
+                        <span>{{ comment.created_at | date:'H:i d.m.Y' }}</span>
+                        {% if user.pk == comment.author.pk %}
+                        <a class="delete-text" href="{% url 'publications:comment_delete' comment.pk %}">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="account-post-nothing">Нет комментариев для показа</div>
+                {% endfor %}
+            </div>
+            {% if user.is_authenticated %}
+            <div class="post-item-comment-create">
+                <form action="{% url 'publications:comment_create' post.pk %}" method="post" class="post-item-comment-create-form">
+                    {% csrf_token %}
+                    <input name="text" type="text" class="post-item-comment-create-input" placeholder="Добавьте комментарий...">
+                    <div class="post-item-comment-submit-wrapper">
+                        <button type="submit" class="post-item-comment-submit">Опубликовать</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="account-post-nothing">Нет постов для показа</div>
+        {% endfor %}
+    </section>
+    <aside class="sidebar">
+        <div class="sidebar-account-wrapper">
+            <div class="sidebar-account-block">
+                {% if user.is_authenticated %}
+                <a href="{% url 'users:details' user.pk %}">
+                    <div class="sidebar-account-avatar" {% if user.avatar %}style="background-image: url({{ user.avatar.url }});"{% endif %}></div>
+                </a>
+                {% else %}
+                <div class="sidebar-account-avatar"></div>
+                {% endif %}
+                <div class="sidebar-account-text">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'users:details' user.pk %}">
+                        <span class="sidebar-account-username">{{ user.username }}</span>
+                    </a>
+                    <span class="sidebar-account-status">{% if user.status %}{{ user.status }}{% else %}Без статуса{% endif %}</span>
+                    {% else %}
+                    <span class="sidebar-account-username">Аноним</span>
+                    <span class="sidebar-account-status">Аноним</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'publications:post_create' %}" class="post-create-link">Добавить<br>публикацию</a>
+            {% endif %}
+        </div>
+        <div class="sidebar-recommendation">
+            <div class="sidebar-recommendation-header">
+                <span class="sidebar-recommendation-header-heading">Рекомендации для вас</span>
+                <a href="#" class="sidebar-recommendation-header-link">Все</a>
+            </div>
+            <div class="sidebar-recommendation-account-container">
+                {% for user in recommended_users %}
+                <div class="sidebar-recommendation-account">
+                    <div class="sidebar-recommendation-account-wrapper">
+                        <a href="{% url 'users:details' user.pk %}">
+                            <div class="sidebar-recommendation-account-avatar-wrapper">
+                                <div class="sidebar-recommendation-account-avatar" {% if user.avatar %}style="background-image: url({{ user.avatar.url }});"{% endif %}></div>
+                            </div>
+                        </a>
+                        <div class="sidebar-recommendation-account-text">
+                            <a href="{% url 'users:details' user.pk %}">
+                                <span class="sidebar-recommendation-account-text-username">{{ user.username }}</span>
+                            </a>
+                            <span class="sidebar-recommendation-account-text-status">{% if user.status %}{{ user.status }}{% else %}Без статуса{% endif %}</span>
+                        </div>
+                    </div>
+                    <div class="sidebar-recommendation-account-button-wrapper">
+                        <a href="{% url 'users:subscribe' user.pk %}" class="sidebar-recommendation-account-button">{% if user.pk in subscribed_users %}Отписаться{% else %}Подписаться{% endif %}</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="account-post-nothing">Нет рекомендованных пользователей</div>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>
+{% include 'partials/_recommendation_subscribe_script.html' %}
+{% include 'partials/_like_script.html' %}
+{% include 'partials/_post_menu_script.html' %}
+{% endblock %}
