@@ -26,7 +26,7 @@ public class Message {
 
     private String filename;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "message_likes",
             joinColumns = { @JoinColumn(name = "message_id") },

@@ -163,13 +163,14 @@ public class MessageController {
             RedirectAttributes redirectAttributes,
             @RequestHeader(required = false) String referer
     ) {
+        
         Set<User> likes = message.getLikes();
         if (likes.contains(currentUser)) {
             likes.remove(currentUser);
         } else {
             likes.add(currentUser);
         }
-        // likes.add(currentUser);
+        messageRepo.save(message);
 
         UriComponents components = UriComponentsBuilder.fromHttpUrl(referer).build();
 
