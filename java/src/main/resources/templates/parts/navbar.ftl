@@ -15,13 +15,19 @@
             <li class="nav-item">
                 <a class="nav-link" href="/main">Messages</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Profile</a>
+            </li>
             <#if isAdmin>
             <li class="nav-item">
                 <a class="nav-link" href="/user">User list</a>
             </li>
             </#if>
         </ul>
-
+        <form method="get" action="/main" class="form-inline my-2 my-lg-0"">
+            <input type="text" name="filter" class="form-control mr-sm-2" value="${filter?ifExists}" placeholder="Search">
+            <button id="m_but" type="submit" class="btn btn-outline-dark my-2 my-sm-0">Search</button>
+        </form>
         <div class="navbar-text mr-3">${name}</div>
         <@l.logout />
     </div>
