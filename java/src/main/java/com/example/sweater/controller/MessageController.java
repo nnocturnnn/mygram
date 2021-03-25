@@ -163,8 +163,14 @@ public class MessageController {
             RedirectAttributes redirectAttributes,
             @RequestHeader(required = false) String referer
     ) {
-        Set<User> likes = message.getLikes();
+        System.out.println("hu");
+        System.out.println(message.getAuthor());
 
+        Set<User> likes = message.getLikes();
+        for (User u : likes) {
+            System.out.println("\n\n\n\n\n");
+            System.out.println(likes.contains(currentUser));
+        }
         if (likes.contains(currentUser)) {
             likes.remove(currentUser);
         } else {
