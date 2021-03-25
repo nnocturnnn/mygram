@@ -163,19 +163,13 @@ public class MessageController {
             RedirectAttributes redirectAttributes,
             @RequestHeader(required = false) String referer
     ) {
-        System.out.println("hu");
-        System.out.println(message.getAuthor());
-
         Set<User> likes = message.getLikes();
-        for (User u : likes) {
-            System.out.println("\n\n\n\n\n");
-            System.out.println(likes.contains(currentUser));
-        }
         if (likes.contains(currentUser)) {
             likes.remove(currentUser);
         } else {
             likes.add(currentUser);
         }
+        // likes.add(currentUser);
 
         UriComponents components = UriComponentsBuilder.fromHttpUrl(referer).build();
 
