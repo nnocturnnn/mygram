@@ -11,6 +11,7 @@
 </#if>
 <div class="container my-3">
     <div class="row">
+        <a class="navbar-brand" href="/user/subscriptions/${userChannel.id}/dir_list""><i class="fab fa-telegram-plane nav-icon"></i>Direct</a>
         <div class="col">
             <div class="card">
                 <div class="card-body">

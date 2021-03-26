@@ -2,7 +2,6 @@
 
 <@c.page>
 
-<#include "parts/messageEdit.ftl" />
 
 <#include "parts/messageList.ftl" />
 

@@ -86,6 +86,24 @@ public class UserController {
         return "redirect:/user-messages/" + user.getId();
     }
 
+    @GetMapping("{type}/{user}/dir_list")
+    public String userListDir(
+            Model model,
+            @PathVariable User user,
+            @PathVariable String type
+    ) {
+        model.addAttribute("userChannel", user);
+        model.addAttribute("type", type);
+
+        if ("subscriptions".equals(type)) {
+            model.addAttribute("users", user.getSubscriptions());
+        } else {
+            model.addAttribute("users", user.getSubscribers());
+        }
+
+        return "dirsubscriptions";
+    }
+
     @GetMapping("{type}/{user}/list")
     public String userList(
             Model model,

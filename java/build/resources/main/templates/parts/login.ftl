@@ -1,3 +1,5 @@
+<#include "security.ftl">
+
 <#macro login path isRegisterForm>
 <form action="${path}" method="post">
     <div class="form-group row">
@@ -65,5 +67,9 @@
     <input type="hidden" name="_csrf" value="${_csrf.token}" />
     <button class="btn btn-outline-dark " type="submit"><#if user??>Sign Out<#else>Log in</#if></button>
 </form>
+    <#if user??>
+    <a style="display: none;" href="/register" class="btn btn-outline-dark">Sign up</a>
+    <#else>
     <a href="/register" class="btn btn-outline-dark">Sign up</a>
+    </#if>
 </#macro>

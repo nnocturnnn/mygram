@@ -3,7 +3,6 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/"><i class="fab fa-instagram nav-icon"></i>Jgram</a>
-
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -32,11 +31,13 @@
             </li>
             </#if>
         </ul>
+        <#if user??>
         <form method="get" action="/main" class="form-inline my-2 my-lg-0"">
             <input type="text" name="filter" class="form-control mr-sm-2" value="${filter?ifExists}" placeholder="Search">
             <button style="type="submit" class="btn btn-outline-dark my-2 my-sm-0">Search</button>
         </form>
-        <div class="navbar-text mr-3"><#if user??>${name}<#else>Please, login</#if></div>
+        </#if>
+        <div class="navbar-text mr-3">${name}</div>
         <@l.logout />
     </div>
 </nav>
