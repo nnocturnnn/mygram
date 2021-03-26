@@ -5,8 +5,13 @@
 <ul class="list-group">
     <#list users as user>
         <li class="list-group-item">
+            <#if userChannel.avatar??>
+                <img style="width: 40px;height: 40px;" src="/img/${userChannel.avatar}" alt="avat" class="rounded-circle">
+                <#else>
+                <img style="width: 40px;height: 40px;" src="/img/unnamed.png" alt="avat" class="rounded-circle">
+            </#if>
             <a href="/user-messages/${user.id}">${user.getUsername()}</a>
-            <a style="margin-left:80%;" class="btn btn-outline-dark" href="">Send Message</a>
+            <a style="" class="btn btn-outline-dark" href="">Send Message</a>
         </li>
     </#list>
 </ul>

@@ -8,7 +8,11 @@
         <div class="card my-3" data-id="${message.id}">
             <div class="card-header">
                 <div class ="row">
+                <#if message.author.avatar??>
+                <img style="width: 40px;height: 40px;" src="/img/${message.author.avatar}" alt="avat" class="rounded-circle">
+                <#else>
                 <img style="width: 40px;height: 40px;" src="img/unnamed.png" alt="avat" class="rounded-circle">
+                </#if>
                 <a class="col align-self-center" href="/user-messages/${message.author.id}">@${message.authorName}</a>
                 <#if message.author.id == currentUserId>
                         <a class="col btn btn-outline-dark" href="/user-messages/${message.author.id}?message=${message.id}">
@@ -18,7 +22,7 @@
                 </div>
             </div>
             <#if message.filename??>
-                <img src="/img/${message.filename}" class="card-img-top" />
+                <img style="width: 350px;height: 300px;" src="/img/${message.filename}" class="card-img-top" />
             </#if>
             <div class="m-2">
                 <span>${message.text}</span><br/>

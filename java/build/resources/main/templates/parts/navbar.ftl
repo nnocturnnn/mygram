@@ -14,7 +14,7 @@
             </li>
             <#if user??>
                 <li class="nav-item">
-                    <a class="nav-link" href="/main">Messages</a>
+                    <a class="nav-link" href="/main">Post</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user-messages/${currentUserId}">Profile</a>

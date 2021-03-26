@@ -24,9 +24,9 @@ ${message?ifExists}
             <input type="description" name="description" class="form-control" placeholder="Description" value="${description!''}" />
         </div>
     </div>
-    <h3>Create Avatar</h3>
-    <div class="form-group">
-        <div class="custom-file">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Awatar:</label>
+        <div class="col-sm-6">
             <input type="file" name="file" id="customFile" />
             <label class="custom-file-label" for="customFile">Choose file</label>
         </div>
