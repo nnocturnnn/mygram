@@ -1,6 +1,26 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
+<div class="rounded-circle">
+            <#if userChannel.avatar??>
+            <img class="rounded-circle" src="/img/${userChannel.avatar}" alt="" width="150">
+            <#else >
+            <img class="rounded-circle" src="/img/unnamed.png" alt="" width="150">
+            </#if>
+        </div>
+
+        <div class="user_info_block">
+            <h3>${userChannel.username}</h3>
+            <#if userChannel.firstName??>
+            <h4>${userChannel.firstName}</h4>
+            </#if>
+            <#if userChannel.lastName??>
+            <h4>${userChannel.lastName}</h4>
+            </#if>
+            <#if userChannel.description??>
+            <p>${userChannel.description}</p>
+            </#if>
+        </div>
 <h3>${userChannel.username}</h3>
 <#if !isCurrentUser>
     <#if isSubscriber>

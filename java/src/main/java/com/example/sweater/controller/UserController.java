@@ -1,5 +1,6 @@
 package com.example.sweater.controller;
 
+import com.example.sweater.domain.Message;
 import com.example.sweater.domain.Role;
 import com.example.sweater.domain.User;
 import com.example.sweater.service.UserSevice;
@@ -9,8 +10,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/user")
@@ -51,6 +57,9 @@ public class UserController {
     public String getProfile(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
+        model.addAttribute("firstName",user.getFirstName());
+        model.addAttribute("lastName",user.getLastName());
+        model.addAttribute("description",user.getDescription());
 
         return "profile";
     }
@@ -59,9 +68,14 @@ public class UserController {
     public String updateProfile(
             @AuthenticationPrincipal User user,
             @RequestParam String password,
-            @RequestParam String email
-    ) {
-        userSevice.updateProfile(user, password, email);
+            @RequestParam String email,
+            @RequestParam String firstName,
+            @RequestParam String lastName,
+            @RequestParam String description,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        saveFile(user, file);
+        userSevice.updateProfile(user, password, email, firstName, lastName, description, user.getAvatar());
 
         return "redirect:/user/profile";
     }
@@ -120,5 +134,23 @@ public class UserController {
         }
 
         return "subscriptions";
+    }
+
+    public void saveFile(@Valid User message, @RequestParam("file") MultipartFile file) throws IOException {
+        String uploadPath = "/src/main/uploads/";
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+            String currentDir = System.getProperty("user.dir");
+            file.transferTo(new File(currentDir + uploadPath + resultFilename));
+            message.setAvatar(resultFilename);
+            System.out.println(currentDir + uploadPath + resultFilename);
+        }
     }
 }

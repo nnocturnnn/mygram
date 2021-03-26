@@ -21,6 +21,14 @@ public class User implements UserDetails {
     private String username;
     @NotBlank(message = "Password cannot be empty")
     private String password;
+//    @NotBlank(message = "Firstname cannot be empty")
+    private String firstName;
+//    @NotBlank(message = "Lastname cannot be empty")
+    private String lastName;
+//    @NotBlank(message = "Description cannot be empty")
+    private String description;
+//    @NotBlank(message = "Avatar cannot be empty")
+    private String avatar;
     private boolean active;
 
     @Email(message = "Email is not correct")
@@ -95,6 +103,38 @@ public class User implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

@@ -109,11 +109,12 @@ public class UserSevice implements UserDetailsService {
         userRepo.save(user);
     }
 
-    public void updateProfile(User user, String password, String email) {
+    public void updateProfile(User user, String password, String email, String firstName, String lastName, String description, String avatar) {
         String userEmail = user.getEmail();
 
         boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
-                (userEmail != null && !userEmail.equals(email));
+                (userEmail != null && !userEmail.equals(email)) || (firstName != null);
+
 
         if (isEmailChanged) {
             user.setEmail(email);
@@ -122,9 +123,19 @@ public class UserSevice implements UserDetailsService {
                 user.setActivationCode(UUID.randomUUID().toString());
             }
         }
-
+        if (!StringUtils.isEmpty(firstName)) {
+            user.setFirstName(firstName);
+        }
         if (!StringUtils.isEmpty(password)) {
             user.setPassword(password);
+        }
+
+        if (!StringUtils.isEmpty(lastName)) {
+            user.setLastName(lastName);
+        }
+
+        if (!StringUtils.isEmpty(description)) {
+            user.setDescription(description);
         }
 
         userRepo.save(user);
